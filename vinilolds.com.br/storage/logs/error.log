@@ -1,0 +1,2 @@
+28-11-2020 6:15:06 - PHP Warning:  fsockopen(): unable to connect to smtp.google.com:25 (Connection timed out) no arquivo /var/www/html/vinilolds.com.br/web/system/library/mail/smtp.php na linha 88
+28-11-2020 21:13:55 - PHP Warning:  fsockopen(): unable to connect to smtp.google.com:25 (Connection timed out) no arquivo /var/www/html/vinilolds.com.br/web/system/library/mail/smtp.php na linha 88

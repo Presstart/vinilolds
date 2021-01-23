@@ -1,0 +1,53 @@
+## Para utilizar o recurso de alias para URL, você precisa estar executando o Apache com o mod_rewrite ativado.
+## Para dúvidas visite: https://forum.opencartbrasil.com.br
+Options +SymLinksIfOwnerMatch
+
+## A linha abaixo evita a listagem de pastas e arquivos nos diretórios quando acessados diretamente pelo navegador.
+Options -Indexes
+
+## As linhas abaixo evitam o acesso direto a arquivos críticos do OpenCart.
+<FilesMatch "(?i)((\.tpl|\.twig|\.ini|\.log|(?<!robots)\.txt))">
+ Require all denied
+## Se estiver utilizando o Apache 2.2 ou versão inferior, acrescente o # na frente da linha "Require all denied" que fica acima, e remova o # das duas linhas abaixo:
+# Order deny,allow
+# Deny from all
+</FilesMatch>
+
+## Abaixo iniciamos as configurações para URL amigável.
+RewriteEngine On
+
+## Se as pastas e arquivos do OpenCart não estiverem no diretório raiz, adicione na linha abaixo o nome do diretório que as pastas e arquivos estão, como: /loja/
+RewriteBase /
+RewriteRule ^sitemap.xml$ index.php?route=extension/feed/google_sitemap [L]
+RewriteRule ^googlebase.xml$ index.php?route=extension/feed/google_base [L]
+RewriteRule ^system/storage/(.*) index.php?route=error/not_found [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !.*\.(ico|gif|jpg|jpeg|png|js|css)
+RewriteRule ^([^?]*) index.php?_route_=$1 [L,QSA]
+
+## Abaixo estão comandos que podem ser utilizados em algumas hospedagens para alterar as configurações do PHP.
+## Se você receber um erro "Internal Server Error 500" após remover o # de qualquer uma das linhas abaixo, basta adicionar o # novamente na frente da linha.
+## Algumas hospedagens só permitem alterações nas configurações do PHP através de arquivos php.ini ou .user.ini, e outras somente através de painel próprio.
+## Em alguns casos a única maneira de alterar as configurações do PHP é entrando em contato com o susporte de sua hospedagem.
+
+## 1. Se o seu carrinho só está permitindo um produto de cada vez, é possível que o register_globals esteja ativado, para desativá-lo remova o # da linha abaixo:
+# php_flag register_globals off
+
+## 2. Se a sua hospedagem estiver com a função magic_quotes ativada, para desativá-la remova o # da linha abaixo:
+# php_flag magic_quotes_gpc Off
+
+## 3. Se você não estiver conseguindo enviar arquivos grandes por upload através da loja, remova o # da linha abaixo:
+# php_value upload_max_filesize 100M
+
+## 4. Se você tem muitas opções nos produtos ou está recebendo erros ao tentar salvar formulários na loja, remova o # da linha abaixo:
+# php_value post_max_size 100M
+
+## 5. Se você tem muitas opções nos produtos ou está recebendo erros ao tentar salvar formulários na loja, remova o # da linha abaixo:
+# php_value max_execution_time 360
+
+## 6. Se você tem muitas opções nos produtos ou está recebendo erros ao tentar salvar formulários na loja, remova o # da linha abaixo:
+# php_value max_input_time 200
+
+## 7. Para desabilitar as limitações do open_basedir que pode ocasionar erros com sessões, remova o # da linha abaixo:
+# php_admin_value open_basedir none
